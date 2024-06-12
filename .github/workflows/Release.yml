@@ -27,7 +27,7 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     - name: Publish
-      run: dotnet publish -c Release -r win-x64 --self-contained=true --output ./publish
+      run: dotnet publish -c Release -r win-x64 /p:SelfContained=true /p:PublishSingleFile=true /p:PublishReadyToRun=true --output ./publish
 
     - name: Create ZIP file
       run: Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
