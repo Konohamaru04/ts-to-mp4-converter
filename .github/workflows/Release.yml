@@ -30,14 +30,14 @@ jobs:
       run: dotnet publish -c Release -r win-x64 /p:SelfContained=true /p:PublishSingleFile=true /p:PublishReadyToRun=true --output ./publish
 
     - name: Create ZIP file
-      run: Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
+      run: Compress-Archive -Path ./publish/* -DestinationPath ./ts-to-mp4-converter.zip
       shell: pwsh
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: published-folder
-        path: ./publish.zip
+        path: ./ts-to-mp4-converter.zip
 
   release:
     needs: build
@@ -75,6 +75,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release/publish.zip
-        asset_name: publish.zip
+        asset_path: ./release/ts-to-mp4-converter.zip
+        asset_name: ts-to-mp4-converter.zip
         asset_content_type: application/zip
