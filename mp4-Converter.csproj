@@ -7,6 +7,20 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>ts.ico</ApplicationIcon>
+    <PackageIcon>ts.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/Konohamaru04/ts-to-mp4-converter</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="ts.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Admin\Downloads\ts.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListViewConverter));
             timer1 = new System.Windows.Forms.Timer(components);
             flowLayoutPanel1 = new FlowLayoutPanel();
             SuspendLayout();
@@ -50,8 +51,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.LightBlue;
             ClientSize = new Size(1402, 714);
             Controls.Add(flowLayoutPanel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximumSize = new Size(1418, 753);
             Name = "ListViewConverter";
             Text = "ListViewConverter";
             Load += ListViewConverter_Load;
