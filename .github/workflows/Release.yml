@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Publish
+      run: dotnet publish -c Release -r win-x64 --self-contained=true --output ./publish
+
+    - name: Create ZIP file
+      run: Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
+      shell: pwsh
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: published-folder
+        path: ./publish.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: published-folder
+        path: ./release
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        body: |
+          Release for commit ${{ github.sha }}.
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release/publish.zip
+        asset_name: publish.zip
+        asset_content_type: application/zip
