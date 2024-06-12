@@ -20,7 +20,7 @@ namespace mp4_Converter
 
         List<string> videos = new List<string>();
         List<string> videosMp4 = new List<string>();
-        string inputDirectory = @"F:\Deepfake\SrcFiles";
+        string inputDirectory;
         private List<Button> buttonList = new List<Button>();
 
         private void ListViewConverter_Load(object sender, EventArgs e)
@@ -30,6 +30,23 @@ namespace mp4_Converter
                 MessageBox.Show("FFmpeg is not installed.", "Alert!");
                 Application.Exit();
             }
+
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+            // Show the dialog and check if the user selects a folder
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                // Get the selected folder
+                inputDirectory = folderBrowserDialog.SelectedPath;
+            }
+
+            if (inputDirectory == null)
+            {
+                MessageBox.Show("Invalid Directory!", "Alert!");
+                Application.Exit();
+            }
+
             timer1.Enabled = true;
         }
 
