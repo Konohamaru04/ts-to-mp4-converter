@@ -25,7 +25,41 @@ namespace mp4_Converter
 
         private void ListViewConverter_Load(object sender, EventArgs e)
         {
+            if (!IsFFmpegInstalled())
+            {
+                MessageBox.Show("FFmpeg is not installed.", "Alert!");
+                Application.Exit();
+            }
             timer1.Enabled = true;
+        }
+
+        private bool IsFFmpegInstalled()
+        {
+            try
+            {
+                Process ffmpegProcess = new Process();
+                ffmpegProcess.StartInfo.FileName = "ffmpeg";
+                ffmpegProcess.StartInfo.Arguments = "-version";
+                ffmpegProcess.StartInfo.RedirectStandardOutput = true;
+                ffmpegProcess.StartInfo.RedirectStandardError = true;
+                ffmpegProcess.StartInfo.UseShellExecute = false;
+                ffmpegProcess.StartInfo.CreateNoWindow = true;
+                ffmpegProcess.Start();
+
+                string output = ffmpegProcess.StandardOutput.ReadToEnd();
+                ffmpegProcess.WaitForExit();
+
+                if (output.Contains("ffmpeg version"))
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+
+            return false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
